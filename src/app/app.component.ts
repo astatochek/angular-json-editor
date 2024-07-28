@@ -1,13 +1,19 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { JsonEditorComponent } from './json-editor.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `<json-editor [json]="json()" (change)="onChange($event)" />`,
+  imports: [JsonEditorComponent],
 })
 export class AppComponent {
-  title = 'json-editor';
+  json = signal<object>({
+    name: 'Asap',
+  });
+
+  onChange(json: object): void {
+    this.json.set(json);
+  }
 }
